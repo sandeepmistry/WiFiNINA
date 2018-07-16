@@ -27,6 +27,11 @@ extern "C" {
 #include "utility/debug.h"
 }
 
+#if defined(ARDUINO_SAMD_MKRVIDOR) || defined(ARDUINO_SAMD_BETA_MKRVIDOR)
+#include "VidorSPI.h"
+#define RESET_ON_EXTENDED_PINS
+#endif
+
 static uint8_t SLAVESELECT = 10; // ss
 static uint8_t SLAVEREADY  = 7;  // handshake pin
 static uint8_t SLAVERESET  = 5;  // reset pin
@@ -56,10 +61,12 @@ void SpiDrv::begin()
       SLAVERESET = (uint8_t)SPIWIFI_RESET;
 #endif
 
+#ifndef RESET_ON_EXTENDED_PINS
       if (SLAVERESET > PINS_COUNT) {
         inverted_reset = true;
         SLAVERESET = ~SLAVERESET;
       }
+#endif
 
       SPIWIFI.begin();
       pinMode(SLAVESELECT, OUTPUT);
