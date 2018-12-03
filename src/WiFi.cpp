@@ -43,10 +43,15 @@ const char* WiFiClass::firmwareVersion()
 
 int WiFiClass::begin(const char* ssid)
 {
+	return begin(ssid, (uint8_t)0);
+}
+
+int WiFiClass::begin(const char* ssid, uint8_t channel)
+{
 	uint8_t status = WL_IDLE_STATUS;
 	uint8_t attempts = WL_MAX_ATTEMPT_CONNECTION;
 
-   if (WiFiDrv::wifiSetNetwork(ssid, strlen(ssid)) != WL_FAILURE)
+   if (WiFiDrv::wifiSetNetwork(ssid, strlen(ssid), channel) != WL_FAILURE)
    {
 	   do
 	   {
@@ -63,11 +68,16 @@ int WiFiClass::begin(const char* ssid)
 
 int WiFiClass::begin(const char* ssid, uint8_t key_idx, const char *key)
 {
+	return begin(ssid, key_idx, key, (uint8_t)0);
+}
+
+int WiFiClass::begin(const char* ssid, uint8_t key_idx, const char *key, uint8_t channel)
+{
 	uint8_t status = WL_IDLE_STATUS;
 	uint8_t attempts = WL_MAX_ATTEMPT_CONNECTION;
 
 	// set encryption key
-   if (WiFiDrv::wifiSetKey(ssid, strlen(ssid), key_idx, key, strlen(key)) != WL_FAILURE)
+   if (WiFiDrv::wifiSetKey(ssid, strlen(ssid), key_idx, key, strlen(key), channel) != WL_FAILURE)
    {
 	   do
 	   {
@@ -82,11 +92,16 @@ int WiFiClass::begin(const char* ssid, uint8_t key_idx, const char *key)
 
 int WiFiClass::begin(const char* ssid, const char *passphrase)
 {
+	return begin(ssid, passphrase, (uint8_t)0);
+}
+
+int WiFiClass::begin(const char* ssid, const char *passphrase, uint8_t channel)
+{
 	uint8_t status = WL_IDLE_STATUS;
 	uint8_t attempts = WL_MAX_ATTEMPT_CONNECTION;
 
     // set passphrase
-    if (WiFiDrv::wifiSetPassphrase(ssid, strlen(ssid), passphrase, strlen(passphrase))!= WL_FAILURE)
+    if (WiFiDrv::wifiSetPassphrase(ssid, strlen(ssid), passphrase, strlen(passphrase), channel)!= WL_FAILURE)
     {
  	   do
  	   {

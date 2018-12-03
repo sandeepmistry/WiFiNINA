@@ -54,6 +54,7 @@ public:
      * param ssid: Pointer to the SSID string.
      */
     int begin(const char* ssid);
+    int begin(const char* ssid, uint8_t channel);
 
     /* Start Wifi connection with WEP encryption.
      * Configure a key into the device. The key type (WEP-40, WEP-104)
@@ -64,6 +65,7 @@ public:
      * param key: Key input buffer.
      */
     int begin(const char* ssid, uint8_t key_idx, const char* key);
+    int begin(const char* ssid, uint8_t key_idx, const char* key, uint8_t channel);
 
     /* Start Wifi connection with passphrase
      * the most secure supported mode will be automatically selected
@@ -73,6 +75,7 @@ public:
      *        must be between ASCII 32-126 (decimal).
      */
     int begin(const char* ssid, const char *passphrase);
+    int begin(const char* ssid, const char *passphrase, uint8_t channel);
 
     uint8_t beginAP(const char *ssid);
     uint8_t beginAP(const char *ssid, uint8_t channel);

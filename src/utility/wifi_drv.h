@@ -84,7 +84,7 @@ public:
      * param ssid_len: Lenght of ssid string.
      * return: WL_SUCCESS or WL_FAILURE
 	 */
-    static int8_t wifiSetNetwork(const char* ssid, uint8_t ssid_len);
+    static int8_t wifiSetNetwork(const char* ssid, uint8_t ssid_len, uint8_t channel);
 
     /* Start Wifi connection with passphrase
      * the most secure supported mode will be automatically selected
@@ -96,7 +96,7 @@ public:
      * param len: Lenght of passphrase string.
      * return: WL_SUCCESS or WL_FAILURE
      */
-    static int8_t wifiSetPassphrase(const char* ssid, uint8_t ssid_len, const char *passphrase, const uint8_t len);
+    static int8_t wifiSetPassphrase(const char* ssid, uint8_t ssid_len, const char *passphrase, const uint8_t len, const uint8_t channel);
 
     /* Start Wifi connection with WEP encryption.
      * Configure a key into the device. The key type (WEP-40, WEP-104)
@@ -109,10 +109,7 @@ public:
      * param len: Lenght of key string.
      * return: WL_SUCCESS or WL_FAILURE
      */
-    static int8_t wifiSetKey(const char* ssid, uint8_t ssid_len, uint8_t key_idx, const void *key, const uint8_t len);
-
-    static int8_t wifiSetApNetwork(const char* ssid, uint8_t ssid_len);
-    static int8_t wifiSetApPassphrase(const char* ssid, uint8_t ssid_len, const char *passphrase, const uint8_t len);
+    static int8_t wifiSetKey(const char* ssid, uint8_t ssid_len, uint8_t key_idx, const void *key, const uint8_t len, const uint8_t channel);
 
     /* Set ip configuration disabling dhcp client
         *

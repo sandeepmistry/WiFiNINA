@@ -116,15 +116,16 @@ void WiFiDrv::wifiDriverDeinit()
     SpiDrv::end();
 }
 
-int8_t WiFiDrv::wifiSetNetwork(const char* ssid, uint8_t ssid_len)
+int8_t WiFiDrv::wifiSetNetwork(const char* ssid, uint8_t ssid_len, uint8_t channel)
 {
 	WAIT_FOR_SLAVE_SELECT();
     // Send Command
-    SpiDrv::sendCmd(SET_NET_CMD, PARAM_NUMS_1);
-    SpiDrv::sendParam((uint8_t*)ssid, ssid_len, LAST_PARAM);
+    SpiDrv::sendCmd(SET_NET_CMD, PARAM_NUMS_2);
+    SpiDrv::sendParam((uint8_t*)ssid, ssid_len, NO_LAST_PARAM);
+    SpiDrv::sendParam(&channel, 1, LAST_PARAM);
 
     // pad to multiple of 4
-    int commandSize = 5 + ssid_len;
+    int commandSize = 2 + ssid_len;
     while (commandSize % 4) {
         SpiDrv::readChar();
         commandSize++;
@@ -148,16 +149,17 @@ int8_t WiFiDrv::wifiSetNetwork(const char* ssid, uint8_t ssid_len)
     return(_data == WIFI_SPI_ACK) ? WL_SUCCESS : WL_FAILURE;
 }
 
-int8_t WiFiDrv::wifiSetPassphrase(const char* ssid, uint8_t ssid_len, const char *passphrase, const uint8_t len)
+int8_t WiFiDrv::wifiSetPassphrase(const char* ssid, uint8_t ssid_len, const char *passphrase, const uint8_t len, const uint8_t channel)
 {
 	WAIT_FOR_SLAVE_SELECT();
     // Send Command
-    SpiDrv::sendCmd(SET_PASSPHRASE_CMD, PARAM_NUMS_2);
+    SpiDrv::sendCmd(SET_PASSPHRASE_CMD, PARAM_NUMS_3);
     SpiDrv::sendParam((uint8_t*)ssid, ssid_len, NO_LAST_PARAM);
-    SpiDrv::sendParam((uint8_t*)passphrase, len, LAST_PARAM);
+    SpiDrv::sendParam((uint8_t*)passphrase, len, NO_LAST_PARAM);
+    SpiDrv::sendParam((uint8_t*)&channel, 1, LAST_PARAM);
 
     // pad to multiple of 4
-    int commandSize = 6 + ssid_len + len;
+    int commandSize = 8 + ssid_len + len;
     while (commandSize % 4) {
         SpiDrv::readChar();
         commandSize++;
@@ -181,17 +183,18 @@ int8_t WiFiDrv::wifiSetPassphrase(const char* ssid, uint8_t ssid_len, const char
 }
 
 
-int8_t WiFiDrv::wifiSetKey(const char* ssid, uint8_t ssid_len, uint8_t key_idx, const void *key, const uint8_t len)
+int8_t WiFiDrv::wifiSetKey(const char* ssid, uint8_t ssid_len, uint8_t key_idx, const void *key, const uint8_t len, const uint8_t channel)
 {
 	WAIT_FOR_SLAVE_SELECT();
     // Send Command
-    SpiDrv::sendCmd(SET_KEY_CMD, PARAM_NUMS_3);
+    SpiDrv::sendCmd(SET_KEY_CMD, PARAM_NUMS_4);
     SpiDrv::sendParam((uint8_t*)ssid, ssid_len, NO_LAST_PARAM);
     SpiDrv::sendParam(&key_idx, KEY_IDX_LEN, NO_LAST_PARAM);
-    SpiDrv::sendParam((uint8_t*)key, len, LAST_PARAM);
+    SpiDrv::sendParam((uint8_t*)key, len, NO_LAST_PARAM);
+    SpiDrv::sendParam((uint8_t*)&channel, 1, LAST_PARAM);
     
     // pad to multiple of 4
-    int commandSize = 8 + ssid_len + len;
+    int commandSize = 10 + ssid_len + len;
     while (commandSize % 4) {
         SpiDrv::readChar();
         commandSize++;
